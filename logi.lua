@@ -2,11 +2,11 @@
 
 -- globalne logi
 local global={
-	{name="other",hook="https://discordapp.com/api/webhooks/678612294866960386/OjgdrlUemFVqVxRoi3PzxorNx5HN-NS7rWNL4xiJO1AH6MOLiBkqh3FDZyzaXh_l0VET"}, -- musi byc 1
-	{name="global",hook="https://discordapp.com/api/webhooks/678612706432909362/8m_q36IY4N-z3nZXQ1wYV9Ktfm1FjmkaK0F9loj79-inx-K0zykSN7QBR8O8PwH0HBZX"},
-	{name="debug",hook="https://discordapp.com/api/webhooks/678609159981236244/nDv8pdSb9n8xBPfQcwYw1zBi15tro-HCWq9pM_rScq9d6e_gVFYJmdU1MdWx5HeilUoZ"},
-	{name="chat",hook="https://discordapp.com/api/webhooks/678611213676183572/1l_RdUNELZSlfL7_5x9g9eIK2NcphxiO3iHgB3rtLd9yofpXUgYt5yU6fbgIx1v_812F"},
-	{name="administracyjne",hook="https://discordapp.com/api/webhooks/678611625992781843/G_fY0c-khfipXQ5FxCT5QTsNB-vA2XMQIixbLMYxbI1PQpZKnYqtTCxZoUPPK0-wIW-b"},
+	{name="other",hook=""}, -- musi byc 1
+	{name="global",hook=""},
+	{name="debug",hook=""},
+	{name="chat",hook=""},
+	{name="administracyjne",hook=""},
 }
 
 for i,v in ipairs(global) do
@@ -38,7 +38,7 @@ function loguj(file,message)
 	fileWrite(state.file, message)
 	fileFlush(state.file)
 
-	if not state.hook then
+	if not state.hook or #state.hook<10 then
 		return
 	end
 	sendOptions={
