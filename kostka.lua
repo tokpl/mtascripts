@@ -19,7 +19,7 @@ end
 function cmd_kostka(plr,cmd,cel,value)
 	if cmd=="wyzwij" then
 		if cel and value and tonumber(value) and value>100 then
-			if plr.dimension~=1057 and plr.interior~=1 then
+			if getPlayerDimension(plr)~=1057 and getPlayerInterior(plr)~=1 then
 				outputChatBox("Żeby kogoś wyzwać, musisz znajdować się w kasynie",plr)
 				return
 			end
@@ -33,22 +33,22 @@ function cmd_kostka(plr,cmd,cel,value)
 				outputChatBox("Nie możesz wyzwać samego siebie!",plr)
 				return
 			end
-			if cel.getData("sgKostkaWyzwany") and isElement(cel.getData("sgKostkaWyzwany").wyzywajacy) then
+			if getPlayerData(cel,"sgKostkaWyzwany") and isElement(getPlayerData(cel,"sgKostkaWyzwany").wyzywajacy) then
 				outputChatBox("Gracz już został zaproszony, poczekaj chwilę",plr)
 				return
 			end
-			if value>plr.money then
+			if value>getPlayerMoney(plr) then
 				outputChatBox("Nie masz wystarczającej ilości pieniędzy",plr)
 				return
 			end
-			outputChatBox(plr.name.." wyzwał Cię na pojedynek w kostkę, o "..value.."$\nMasz 60 sekund na zaakceptowanie wyzwania za pomocą /kostka akceptuj "..plr.name,cel)
-			outputChatBox("Wyzwałeś gracza "..cel.name.." na pojedynek o "..value.."$, Gracz ma 60 sekund na zaakceptowanie wyzwania",plr)
-			timer=setTimer(function()
+			outputChatBox(getPlayerName(plr).." wyzwał Cię na pojedynek w kostkę, o "..value.."$\nMasz 60 sekund na zaakceptowanie wyzwania za pomocą /kostka akceptuj "..getPlayerName(plr),cel)
+			outputChatBox("Wyzwałeś gracza "..getPlayerName(cel).." na pojedynek o "..value.."$, Gracz ma 60 sekund na zaakceptowanie wyzwania",plr)
+			timer=setTimer(function(cel)
 				if not cel then
 					return
 				end
-				if cel.getData("sgKostkaWyzwany") then
-					cel.removeData("sgKostkaWyzwany")
+				if getPlayerData(cel,"sgKostkaWyzwany") then
+					removePlayerData(cel,"sgKostkaWyzwany")
 					if plr then
 						outputChatBox("Wyzwanie wygasło",plr)
 					end
@@ -64,7 +64,7 @@ function cmd_kostka(plr,cmd,cel,value)
 			outputChatBox("Użyj: /akceptuj <login/id>",plr)
 			return
 		end
-		if not plr.getData("sgKostkaWyzwany") then
+		if not getPlayerData(plr,"sgKostkaWyzwany") then
 			outputChatBox("Nikt Ciebie nie zaprosił do kostki, bądź zaproszenie wygasło",plr)
 			return
 		end
@@ -73,46 +73,44 @@ function cmd_kostka(plr,cmd,cel,value)
 			outputChatBox("Nie odnaleziono gracza, którego chcesz wyzwać",plr)
 			return
 		end
-		if cel~=plr.getData("sgKostkaWyzwany").wyzywajacy then
+		if cel~=getPlayerData(plr,"sgKostkaWyzwany")("sgKostkaWyzwany").wyzywajacy then
 			outputChatBox(cel.name.." nie zaprosił Ciebie do kostki",plr)
 			return
 		end
-		if plr.dimension~=1057 and plr.interior~=1 then
+		if getPlayerDimension(plr)~=1057 and getPlayerInterior(plr)~=1 then
 			outputChatBox("Żeby zaakceptować wyzwanie, musisz znajdować się w kasynie",plr)
 			return
 		end
-		if cel.dimension~=1057 and cel.interior~=1 then
+		if getPlayerDimension(cel)~=1057 and getPlayerInterior(cel)~=1 then
 			outputChatBox(cel.name.." nie znajduje się w kasynie",cel)
 			return
 		end
-		if plr.getData("sgKostkaWyzwany").kasa>cel.money then
+		if getPlayerData(plr,"sgKostkaWyzwany").kasa>getPlayerMoney(cel) then
 			outputChatBox(cel.name.." nie ma pieniędzy na rozgrywkę!",cel)
 			return
 		end
-		if plr.getData("sgKostkaWyzwany").kasa>plr.money then
+		if getPlayerData(plr,"sgKostkaWyzwany").kasa>getPlayerMoney(plr) then
 			outputChatBox("Nie masz wystarczającej ilości pieniędzy na rozgrywkę!",plr)
 			return
 		end
-		plr:takeMoney(plr.getData("sgKostkaWyzwany").kasa)
-		cel:takeMoney(plr.getData("sgKostkaWyzwany").kasa)
 		pk=math.random(1,6)
 		ck=math.random(1,6) 
 		if pk==ck then
 			outputChatBox("REMIS, we dwójkę wylosowaliście "..pk.." oczek na kostce!",plr)
 			outputChatBox("REMIS, we dwójkę wylosowaliście "..pk.." oczek na kostce!",cel)
 		elseif pk>ck then
-			cel:takeMoney(plr.getData("sgKostkaWyzwany").kasa)
-			plr:giveMoney(plr.getData("sgKostkaWyzwany").kasa)
-			outputChatBox(plr.name.." wylosował liczbę "..pk..", "..cel.name.." wylosował liczbę "..ck..", Zwycięża: "..plr.name,plr)
-			outputChatBox(plr.name.." wylosował liczbę "..pk..", "..cel.name.." wylosował liczbę "..ck..", Zwycięża: "..plr.name,cel)
+			takePlayerMoney(cel,getPlayerData(plr,"sgKostkaWyzwany").kasa)
+			givePlayerMoney(plr,getPlayerData(plr,"sgKostkaWyzwany").kasa)
+			outputChatBox(getPlayerName(plr).." wylosował liczbę "..pk..", "..getPlayerName(cel).." wylosował liczbę "..ck..", Zwycięża: "..getPlayerName(plr),plr)
+			outputChatBox(getPlayerName(plr).." wylosował liczbę "..pk..", "..getPlayerName(cel).." wylosował liczbę "..ck..", Zwycięża: "..getPlayerName(plr),cel)
 		elseif ck>pk then
-			cel:giveMoney(plr.getData("sgKostkaWyzwany").kasa)
-			plr:takeMoney(plr.getData("sgKostkaWyzwany").kasa)
-			outputChatBox(cel.name.." wylosował liczbę "..pk..", "..plr.name.." wylosował liczbę "..ck..", Zwycięża: "..cel.name,plr)
-			outputChatBox(cel.name.." wylosował liczbę "..pk..", "..plr.name.." wylosował liczbę "..ck..", Zwycięża: "..cel.name,cel)
+			givePlayerMoney(cel,getPlayerData(plr,"sgKostkaWyzwany").kasa)
+			takePlayerMoney(plr,getPlayerData(plr,"sgKostkaWyzwany").kasa)
+			outputChatBox(getPlayerName(cel).." wylosował liczbę "..pk..", "..getPlayerName(plr).." wylosował liczbę "..ck..", Zwycięża: "..getPlayerName(cel),plr)
+			outputChatBox(getPlayerName(cel).." wylosował liczbę "..pk..", "..getPlayerName(plr).." wylosował liczbę "..ck..", Zwycięża: "..getPlayerName(cel),cel)
 		end
-		killTimer(plr.getData("sgKostkaWyzwany").tmr)
-		plr.removeData("sgKostkaWyzwany")
+		killTimer(getPlayerData(plr,"sgKostkaWyzwany").tmr)
+		removePlayerData(plr,"sgKostkaWyzwany")
 	end
 end
 addCommandHandler("wyzwij",cmd_kostka)
