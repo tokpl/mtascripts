@@ -107,8 +107,8 @@ function cmd_kostka(plr,cmd,cel,value)
 		elseif ck>pk then
 			givePlayerMoney(cel,getElementData(plr,"sgKostkaWyzwany").kasa)
 			takePlayerMoney(plr,getElementData(plr,"sgKostkaWyzwany").kasa)
-			outputChatBox(getPlayerName(cel).." wylosował liczbę "..pk..", "..getPlayerName(plr).." wylosował liczbę "..ck..", Zwycięża: "..getPlayerName(cel),plr)
-			outputChatBox(getPlayerName(cel).." wylosował liczbę "..pk..", "..getPlayerName(plr).." wylosował liczbę "..ck..", Zwycięża: "..getPlayerName(cel),cel)
+			outputChatBox(getPlayerName(cel).." wylosował liczbę "..ck..", "..getPlayerName(plr).." wylosował liczbę "..pk..", Zwycięża: "..getPlayerName(cel),plr)
+			outputChatBox(getPlayerName(cel).." wylosował liczbę "..ck..", "..getPlayerName(plr).." wylosował liczbę "..pk..", Zwycięża: "..getPlayerName(cel),cel)
 		end
 		killTimer(getElementData(plr,"sgKostkaWyzwany").tmr)
 		removeElementData(plr,"sgKostkaWyzwany")
