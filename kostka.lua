@@ -118,8 +118,7 @@ addCommandHandler("wyzwij",cmd_kostka)
 addCommandHandler("akceptuj",cmd_kostka)
 
 for i,v in ipairs(getElementsByType("player")) do
-	if not getElementData(v,"sgKostkaWyzwany") then
-		return
+	if getElementData(v,"sgKostkaWyzwany") then
+		removeElementData(v,"sgKostkaWyzwany")
 	end
-	removeElementData(v,"sgKostkaWyzwany")
 end
