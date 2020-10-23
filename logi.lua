@@ -2,7 +2,7 @@
 
 -- globalne logi
 local global={
-	{name="other",hook=""}, -- musi byc 1
+	{name="other",hook=""}, -- musi byc pierwsze
 	{name="global",hook=""},
 	{name="debug",hook=""},
 	{name="chat",hook=""},
